@@ -5,7 +5,7 @@ import (
   )
 
   func handler( w http.ResponseWriter, r *http.Request) {
-    fmt.Println("hello")
+    w.Write([]byte("hello"))
   }
 
   func main() {
