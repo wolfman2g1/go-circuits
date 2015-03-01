@@ -18,6 +18,7 @@ func main() {
 	s := server{
 		db: db,
 	}
+	defer s.close()
 
 	s.initialize()
 
