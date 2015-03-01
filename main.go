@@ -3,10 +3,16 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+<<<<<<< Updated upstream
 	"log"
 	"net/http"
 
 	"github.com/boltdb/bolt"
+=======
+	"github.com/boltdb/bolt"
+	"log"
+	"net/http"
+>>>>>>> Stashed changes
 )
 
 func main() {
@@ -84,7 +90,12 @@ func (s *server) postChange(w http.ResponseWriter, r *http.Request) {
 	})
 	fmt.Println(c)
 }
+func init() {
+	db, err := bolt.Open("test.db", 0600, nil)
+	if err != nil {
+		log.Fatal(err)
 
+<<<<<<< Updated upstream
 // Do anything you need to setup before the server actually runs
 func (s *server) initialize() {
 	s.db.Update(func(tx *bolt.Tx) error {
@@ -107,4 +118,9 @@ func (s *server) close() {
 type change struct {
 	Name    string `json:"name"`
 	Message string `json:"message"`
+=======
+	}
+	defer db.Close()
+
+>>>>>>> Stashed changes
 }
