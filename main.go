@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+  "github.com/boltdb/bolt"
+  "log"
 )
 
 type PostStruct struct {
@@ -29,5 +31,15 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(p)
+}
 
+func func init() {
+  db,err := bolt.Open("test.db", 0600, nil)
+  if err != nil {
+    log.Fatal(err)
+
+  }
+  defer db.Close()
+  
 }
