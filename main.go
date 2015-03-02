@@ -73,8 +73,9 @@ func (s *server) postChange(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//check to make sure the change struct is not nil
-	if c.Name == " " || c.Message == " " {
+	if c.Name == "" || c.Message == "" {
 		w.Write([]byte("Invalid input"))
+		return
 	}
 	s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(`changes`))
@@ -84,6 +85,7 @@ func (s *server) postChange(w http.ResponseWriter, r *http.Request) {
 		// Usually here, you would marshal your struct into
 		// json, but we are going to keep it simple for now.
 		b.Put([]byte(c.Name), []byte(c.Message))
+		w.Write([]byte("Saved!"))
 		return nil
 	})
 	fmt.Println(c)
