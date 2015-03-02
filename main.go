@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
@@ -55,22 +54,27 @@ func (s *server) getCircuits(c *gin.Context) {
 		b := tx.Bucket([]byte(`circuits`))
 		b.ForEach(func(key, value []byte) error {
 			log.Println(string(key), string(value))
+			return nil
 
 		})
+		return nil
 
 	})
+
 }
 
 func (s *server) postCircuits(c *gin.Context) {
 	var cirs circuit
-	err := c.Bind(&cirs)
-	if err != nil {
+	if !c.Bind(&cirs) {
+
 		// inbound json was invalid
-		log.Println("Error parsing JSON:", err)
+		c.String(200, "Error parsing JSON:")
+		return nil
+
 	}
 	s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(`circuits`))
-		b.Put([]byte(cirs.CircuitID), []byte(cirs.CircuitLoc), []byte(cirs.CarrierBlock))
+		b.Put([]byte(cirs.CircuitId), []byte(cirs.CircuitLoc), []byte(cirs.CarrierBlock))
 		return nil
 
 	})
@@ -83,17 +87,22 @@ func (s *server) getCarriers(c *gin.Context) {
 		b := tx.Bucket([]byte(`carriers`))
 		b.ForEach(func(key, value []byte) error {
 			log.Println(string(key), string(value))
+			return nil
 		})
+		return nil
 	})
 }
 
 // create carriers
 func (s *server) postCarriers(c *gin.Context) {
 	var car carrier
-	err := c.Bind(&car)
-	if err != nil {
-		log.Println("Error parsing JSON:", err)
+	if !c.Bind(&car) {
+		// inbound json was invalid
+		c.String(200, "Error parsing JSON:")
+		return nil
+
 	}
+
 	s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(`circuits`))
 		b.Put([]byte(car.CarrierName), []byte(car.SupportEmail), []byte(car.SupportNum))
