@@ -54,10 +54,10 @@ func (s *server) getCircuits(c *gin.Context) {
 		b := tx.Bucket([]byte(`circuits`))
 		b.ForEach(func(key, value []byte) error {
 			log.Println(string(key), string(value))
-			return nil
+			return
 
 		})
-		return nil
+		return
 
 	})
 
@@ -69,13 +69,13 @@ func (s *server) postCircuits(c *gin.Context) {
 
 		// inbound json was invalid
 		c.String(200, "Error parsing JSON:")
-		return nil
+		return
 
 	}
 	s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(`circuits`))
 		b.Put([]byte(cirs.CircuitId), []byte(cirs.CircuitLoc), []byte(cirs.CarrierBlock))
-		return nil
+		return
 
 	})
 	fmt.Println(cirs)
@@ -87,9 +87,9 @@ func (s *server) getCarriers(c *gin.Context) {
 		b := tx.Bucket([]byte(`carriers`))
 		b.ForEach(func(key, value []byte) error {
 			log.Println(string(key), string(value))
-			return nil
+			return
 		})
-		return nil
+		return
 	})
 }
 
@@ -99,14 +99,14 @@ func (s *server) postCarriers(c *gin.Context) {
 	if !c.Bind(&car) {
 		// inbound json was invalid
 		c.String(200, "Error parsing JSON:")
-		return nil
+		return
 
 	}
 
 	s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(`circuits`))
 		b.Put([]byte(car.CarrierName), []byte(car.SupportEmail), []byte(car.SupportNum))
-		return nil
+		return
 	})
 	fmt.Println(car)
 }
@@ -119,7 +119,7 @@ func (s *server) initialize() {
 		// you will get a panic
 		tx.CreateBucket([]byte(`circuits`))
 		tx.CreateBucketIfNotExists([]byte(`carriers`))
-		return nil
+		return
 	})
 }
 
