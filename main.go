@@ -5,9 +5,10 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 	"log"
+	"./datastore"
 )
 
-type carrier struct {
+/*type carrier struct {
 	CarrierName  string `json: "carrier_name"  binding: "required"`
 	SupportEmail string `json: "support_email"  binding: "required"`
 	SupportNum   string `json: "support_num"  binding: "required"`
@@ -37,7 +38,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
-	})
+	}) */
 	// circuit end point
 	router.GET("/circuit", s.getCircuits)
 	router.POST("/circuit", s.postCircuits)
